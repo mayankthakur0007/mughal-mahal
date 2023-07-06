@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "mughal mehal welfare",
+    "slug": "mughal-mehal-welfare",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.5.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "",
+    "android": {
+      "package": "com.azeemkhanreal.mughalmehalwelfare",
+      "permissions":[
+        "INTERNET",
+        "MEDIA_LIBRARY",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "MANAGE_EXTERNAL_STORAGE"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9b35c225-8090-4864-b903-1ff0065dbd4c"
+      }
+    }
+  }
+}
