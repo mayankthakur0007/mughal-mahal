@@ -18,6 +18,12 @@ export const DesignationSchema = Yup.object({
 export const StaffSchema = Yup.object({
   name: Yup.string().required("Please enter Staff name"),
 });
+export const MessageSchema = Yup.object({
+  email: Yup.string().required("Please enter Email"),
+  phone_number: Yup.string().required("Please enter Phone Number"),
+  message: Yup.string().required("Please enter Message"), 
+  subject:Yup.string().required("Please enter Subject")
+});
 
 export const LeaveSchema = Yup.object({
   kuwaitContactNumber: Yup.string().required("Required"),

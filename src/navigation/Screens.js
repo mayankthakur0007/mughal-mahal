@@ -87,7 +87,7 @@ function DesignationManagementStack(props) {
   );
 }
 
-function StaffManagementStack(props) {
+function  StaffManagementStack(props) {
   return (
     <Stack.Navigator
       screenOptions={{

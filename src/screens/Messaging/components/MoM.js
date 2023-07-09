@@ -10,7 +10,6 @@ export default class MoM extends Component{
       leaveTab: 1,
     };
   }
-      
     render(){
         return (
           <SafeAreaView style={styles.container}>

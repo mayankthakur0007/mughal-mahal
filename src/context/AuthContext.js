@@ -17,7 +17,6 @@ export const AuthProvider = ({children}) => {
             let userInfo = res.data;
             let token = userInfo.token;
             userDetails(token,userInfo);
-         
           })
           .catch((error)=>{
             if (error.response) {
@@ -58,6 +57,7 @@ export const AuthProvider = ({children}) => {
         try {
           let userData = await AsyncStorage.getItem('userInfo');
           let parsedUserData = JSON.parse(userData); 
+          console.log(parsedUserData);
           if(parsedUserData && parsedUserData.status==200)
           {
             setUserInfo(userData);
