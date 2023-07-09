@@ -75,6 +75,7 @@ const MessageForm = ({ label, from }) => {
         <Input
           style={styles.input}
           label="Message"
+          multiline={true}
           labelStyle={styles.labelStyle}
           onChangeText={formik.handleChange("message")}
           onBlur={formik.handleBlur("message")}
