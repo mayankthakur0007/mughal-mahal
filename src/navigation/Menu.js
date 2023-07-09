@@ -27,6 +27,7 @@ function CustomDrawerContent({
     'Leaves Management',
     'Branch Management',
     'Designation Management',
+    'Messaging',
     'Staff Management',
     'Loan Management',
     'Study Material',

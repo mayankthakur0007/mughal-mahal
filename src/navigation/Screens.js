@@ -11,6 +11,7 @@ import Leave from "../screens/Leave/Leave";
 import Branch from "../screens/Branch/Branch";
 import Profile from "../screens/Profile";
 import Login from "../screens/Login";
+import Messaging from "../screens/Messaging/components/Messaging";
 import Loan from "../screens/Loan/Loan";
 import Designation from "../screens/Designation/Designation";
 import Staff from "../screens/Staff/Staff";
@@ -347,6 +348,11 @@ function AppStack(props) {
       <Drawer.Screen
         name="Designation Management"
         component={DesignationManagementStack}
+        options={{ headerShown: false }}
+      />
+       <Drawer.Screen
+        name="Messaging"
+        component={Messaging}
         options={{ headerShown: false }}
       />
       <Drawer.Screen
