@@ -37,7 +37,7 @@ const MessageForm = ({ label, from }) => {
         >
           {label}
         </Text>
-        {from == "Management" || "Comms" ? (
+        {from == "Management" || from == "Comms" ? (
           <Input
             style={styles.input}
             label="Subject"
