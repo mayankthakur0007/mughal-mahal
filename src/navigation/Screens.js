@@ -12,6 +12,9 @@ import Branch from "../screens/Branch/Branch";
 import Profile from "../screens/Profile";
 import Login from "../screens/Login";
 import Messaging from "../screens/Messaging/components/Messaging";
+import MoM from "../screens/Messaging/components/MoM";
+import InternalComms from "../screens/Messaging/components/InternalComms";
+import MessagesFromManagement from "../screens/Messaging/components/MessagesFromManagement";
 import Loan from "../screens/Loan/Loan";
 import Designation from "../screens/Designation/Designation";
 import Staff from "../screens/Staff/Staff";
@@ -350,10 +353,61 @@ function AppStack(props) {
         component={DesignationManagementStack}
         options={{ headerShown: false }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
+        name="MoM"
+        component={MoM}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="MoM"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+        }}
+      />
+      <Drawer.Screen
         name="Messaging"
         component={Messaging}
-        options={{ headerShown: false }}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Messaging"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+        }}
+      />
+      <Drawer.Screen
+        name="Messages from management"
+        component={MessagesFromManagement}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Messages from management"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+        }}
+      />
+      <Drawer.Screen
+        name="Internal Comms"
+        component={InternalComms}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Internal Comms"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+        }}
       />
       <Drawer.Screen
         name="Staff Management"

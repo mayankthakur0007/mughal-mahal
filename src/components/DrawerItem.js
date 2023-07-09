@@ -30,6 +30,16 @@ class DrawerItem extends React.Component {
             style={{ opacity: 0.5 }}
           />
         );
+        case "MoM":
+          return (
+            <Icon
+              name="atom2x"
+              family="NowExtra"
+              size={18}
+              color={focused ? nowTheme.COLORS.PRIMARY : "black"}
+              style={{ opacity: 0.5 }}
+            />
+          );
         case "Messaging":
           return (
             <Icon
@@ -40,6 +50,26 @@ class DrawerItem extends React.Component {
               style={{ opacity: 0.5 }}
             />
           );
+          case "Messages from management":
+            return (
+              <Icon
+                name="atom2x"
+                family="NowExtra"
+                size={18}
+                color={focused ? nowTheme.COLORS.PRIMARY : "black"}
+                style={{ opacity: 0.5 }}
+              />
+            );
+            case "Internal Comms":
+              return (
+                <Icon
+                  name="atom2x"
+                  family="NowExtra"
+                  size={18}
+                  color={focused ? nowTheme.COLORS.PRIMARY : "black"}
+                  style={{ opacity: 0.5 }}
+                />
+              );
       case "Designation Management":
         return (
           <Icon
