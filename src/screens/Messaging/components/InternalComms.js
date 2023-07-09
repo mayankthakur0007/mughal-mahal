@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import MessageForm from "./MessageForm";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomSwitch from "../../../components/CustomSwitch";
+import { Card } from "@rneui/themed";
 
 const InternalComms = () => {
   const [leaveTab, setLeaveTab] = useState(1);
@@ -21,10 +22,9 @@ const InternalComms = () => {
           }}
         />
         {leaveTab == 1 && (
-          <MessageForm
-            label={"Add Comms"}
-            from={"Comms"}
-          />
+          <Card style={styles.card} containerStyle={styles.card}>
+            <MessageForm label={"Add Comms"} from={"Comms"} />
+          </Card>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -37,5 +37,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF",
     flex: 1,
     paddingHorizontal: 10,
+  },
+  card: {
+    borderRadius: 10,
   },
 });

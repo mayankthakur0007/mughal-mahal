@@ -1,10 +1,9 @@
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import { Input } from "@rneui/themed";
+import { Input, Button } from "@rneui/themed";
 import React from "react";
 import * as DocumentPicker from "expo-document-picker";
 import { useFormik } from "formik";
 import { MessageSchema } from "../../../shared/FormValidationSchema";
-import { Button } from "@rneui/base";
 
 const MessageForm = ({ label, from }) => {
   const onSubmit = async (formData) => {
@@ -22,7 +21,7 @@ const MessageForm = ({ label, from }) => {
       message: "",
       phone_number: "",
       email: "",
-      subject: ""
+      subject: "",
     },
     onSubmit,
     validationSchema: MessageSchema,
@@ -46,7 +45,7 @@ const MessageForm = ({ label, from }) => {
             onBlur={formik.handleBlur("subject")}
             errorStyle={{ color: "red" }}
             errorMessage={formik.errors.subject}
-            keyboardType="number-pad"
+            value={formik.values.subject}
           />
         ) : (
           <>
@@ -58,7 +57,8 @@ const MessageForm = ({ label, from }) => {
               onBlur={formik.handleBlur("email")}
               errorStyle={{ color: "red" }}
               errorMessage={formik.errors.email}
-              keyboardType="number-pad"
+              keyboardType="email-address"
+              value={formik.values.email}
             />
             <Input
               style={styles.input}
@@ -69,6 +69,7 @@ const MessageForm = ({ label, from }) => {
               errorStyle={{ color: "red" }}
               errorMessage={formik.errors.phone_number}
               keyboardType="number-pad"
+              value={formik.values.phone_number}
             />
           </>
         )}
@@ -81,27 +82,35 @@ const MessageForm = ({ label, from }) => {
           onBlur={formik.handleBlur("message")}
           errorStyle={{ color: "red" }}
           errorMessage={formik.errors.message}
-          keyboardType="number-pad"
+          value={formik.values.message}
         />
         <View>
           <Button
-            containerStyle={{ marginVertical: 10 }}
+            color="black"
+            containerStyle={{ marginVertical: 10, flexGrow: 0 }}
+            buttonStyle={{ borderRadius: 5 }}
+            title="Upload files"
+            titleStyle={{ color: "white" }}
             onPress={() => _pickDocument()}
-          >
-            <Text>Upload files</Text>
-          </Button>
-          <Button
-            containerStyle={{ marginVertical: 10 }}
-            onPress={() => handleClose()}
-          >
-            <Text>Cancel</Text>
-          </Button>
-          <Button
-            containerStyle={{ marginVertical: 10 }}
-            onPress={() => onSubmit()}
-          >
-            <Text>Submit</Text>
-          </Button>
+          />
+          <View style={styles.btnGroup}>
+            <Button
+              color="white"
+              containerStyle={{ marginVertical: 10, flexGrow: 0 }}
+              titleStyle={{ color: "black" }}
+              buttonStyle={{ borderRadius: 5 }}
+              title="Cancel"
+              onPress={() => handleClose()}
+            />
+            <Button
+              color="black"
+              containerStyle={{ marginVertical: 10, flexGrow: 0 }}
+              title="Submit"
+              titleStyle={{ color: "white" }}
+              buttonStyle={{ borderRadius: 5 }}
+              onPress={formik.handleSubmit}
+            />
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -117,13 +126,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   input: {
-    backgroundColor: "#f2f2f2",
-    paddingLeft: 5,
+    backgroundColor: "#fff",
+    paddingHorizontal: 8,
   },
   labelStyle: {
-    color: "grey",
+    color: "#000",
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  btnGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

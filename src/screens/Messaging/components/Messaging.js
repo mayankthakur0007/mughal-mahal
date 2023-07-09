@@ -1,9 +1,10 @@
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import MessageForm from "./MessageForm";
 import CustomSwitch from "../../../components/CustomSwitch";
+import { Card } from "@rneui/themed";
 
 export default function Messaging() {
   const [leaveTab, setLeaveTab] = useState(1);
@@ -22,7 +23,7 @@ export default function Messaging() {
           }}
         />
         {leaveTab == 1 && (
-          <>
+          <Card style={styles.card} containerStyle={styles.card}>
             <View>
               <Text
                 style={{
@@ -84,7 +85,7 @@ export default function Messaging() {
               label={"Do you want to say something?"}
               from={"Messaging"}
             />
-          </>
+          </Card>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -106,5 +107,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  card: {
+    borderRadius: 10,
   },
 });
