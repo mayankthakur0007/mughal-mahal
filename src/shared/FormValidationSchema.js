@@ -67,3 +67,10 @@ export const QuestionSchema = Yup.object({
   correctOption : Yup.string().required("Please select Correct Option"),
   pointsOnCorrentAns : Yup.number().required("Please Enter Points on Correct Answer")
 });
+
+export const MoMSchema = Yup.object({
+  subject: Yup.string().required("Required"),
+  hosted_by: Yup.string().required("Required"),
+  branch: Yup.string().required("Required"),
+  message: Yup.string().required("Required"),
+});
