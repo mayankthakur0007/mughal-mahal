@@ -6,8 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const[userInfo,setUserInfo] = useState();
-    const[isLoading,setIsLoading] = useState(false);
+  const[userInfo,setUserInfo] = useState();
+  const[branchInfo,setBranchInfo] = useState([]);
+  const[isLoading,setIsLoading] = useState(false);
     const[isLogin,setIsLogin] = useState(false);
 
     const login = (formData) =>{
@@ -80,6 +81,8 @@ export const AuthProvider = ({children}) => {
                 userInfo,
                 isLogin,
                 logout,
+                branchInfo,
+                setBranchInfo
             }}>
                 {children}
                 </AuthContext.Provider>

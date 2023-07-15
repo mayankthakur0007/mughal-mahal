@@ -1,12 +1,26 @@
 import { StyleSheet, View, Text } from "react-native";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState,useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomSwitch from "../../../components/CustomSwitch";
 import Compose from "./Compose";
 import ViewMoM from "./ViewMoM";
+import { branch } from "../../../shared/Http/branchCall";
+import { AuthContext } from "../../../context/AuthContext";
 
 const MoM = () => {
   const [leaveTab, setLeaveTab] = useState(1);
+  const { setBranchInfo } = useContext(AuthContext);
+  useEffect(() => {
+    const branches = branch.findAll();
+    branches
+      .then((response) => {
+        console.log("ggg",JSON.stringify(response.data))
+        setBranchInfo(response.data);
+      })
+      .catch((error) => {
+        
+      });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

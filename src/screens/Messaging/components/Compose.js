@@ -1,20 +1,32 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { Button, Card, Input } from "@rneui/themed";
 import { ScrollView } from "react-native-gesture-handler";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { MoMSchema } from "../../../shared/FormValidationSchema";
+import { mom } from "../../../shared/Http/momCall";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Compose = () => {
+  const { branchInfo } = useContext(AuthContext);
+
   const onSubmit = async (formData) => {
-    console.log(formData);
-    handleClose();
+    const branches = mom.create(formData);
+    console.log("ggg");
+    branches
+      .then((response) => {
+        handleClose();
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      });
   };
 
   const handleClose = () => {
     formik.resetForm();
   };
+  console.log(branchInfo, "gg");
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +35,7 @@ const Compose = () => {
       branch: "",
       message: "",
     },
-    onSubmit :onSubmit,
+    onSubmit: onSubmit,
     validationSchema: MoMSchema,
   });
 
@@ -59,42 +71,22 @@ const Compose = () => {
             <Text style={styles.labelStyle}>Branch</Text>
             <View style={styles.dropDown}>
               <Picker
+              mode="dropdown"
                 onValueChange={(itemValue, itemIndex) => {
                   formik.setFieldValue("branch", itemValue);
                 }}
                 errorStyle={{ color: "red" }}
                 errorMessage={formik.errors.branch}
                 selectedValue={formik.values.branch}
+                val
                 dropdownIconColor="#000"
               >
-                <Picker.Item label="Sharq (SHRQ)" value="Sharq (SHRQ)" />
-                <Picker.Item label="Hawally (HWLY)" value="Hawally (HWLY)" />
-                <Picker.Item
-                  label="Farwaniya (FRWN)"
-                  value="Farwaniya (FRWN)"
-                />
-                <Picker.Item label="Jahra (JHRA)" value="Jahra (JHRA)" />
-                <Picker.Item label="Mahboula (MAHB)" value="Mahboula (MAHB)" />
-                <Picker.Item label="Elite (SLMY#1)" value="Elite (SLMY#1)" />
-                <Picker.Item
-                  label="Multicuisine (SLMY#2)"
-                  value="Multicuisine (SLMY#2)"
-                />
-                <Picker.Item
-                  label="Marina Mall (MRML)"
-                  value="Marina Mall (MRML)"
-                />
-                <Picker.Item label="Fahaheel (FAHL)" value="Fahaheel (FAHL)" />
-                <Picker.Item
-                  label="Head Office (H.O)"
-                  value="Head Office (H.O)"
-                />
-                <Picker.Item
-                  label="Mughal Mahal General Trading Company (MMGTC)"
-                  value="Mughal Mahal General Trading Company (MMGTC)"
-                />
-                <Picker.Item label="Shuwaikh (SHKW)" value="Shuwaikh (SHKW)" />
-                <Picker.Item label="Khiran (KHRN)" value="Khiran (KHRN)" />
+                {branchInfo.map((branch) => (
+                  <Picker.Item
+                    label={`${branch.name} (${branch.code})`}
+                    value={`${branch.name} (${branch.code})`}
+                  />
+                ))}
               </Picker>
             </View>
           </View>
