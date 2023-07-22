@@ -4,6 +4,7 @@ import MessageForm from "./MessageForm";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomSwitch from "../../../components/CustomSwitch";
 import { Card } from "@rneui/themed";
+import ViewMessages from "./ViewMessages";
 
 const InternalComms = () => {
   const [leaveTab, setLeaveTab] = useState(1);
@@ -15,16 +16,15 @@ const InternalComms = () => {
           selectionMode={leaveTab}
           option1="Compose"
           option2="Mailbox"
-          onSelectSwitch={() => {
-            if (leaveTab == 1) {
-              setLeaveTab(2);
-            } else setLeaveTab(1);
-          }}
+          onSelectSwitch={setLeaveTab}
         />
         {leaveTab == 1 && (
           <Card style={styles.card} containerStyle={styles.card}>
             <MessageForm label={"Add Comms"} from={"Comms"} />
           </Card>
+        )}
+        {leaveTab == 2 && (
+            <ViewMessages from={"Comms"} />
         )}
       </ScrollView>
     </SafeAreaView>

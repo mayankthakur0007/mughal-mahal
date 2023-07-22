@@ -1,8 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CustomSwitch = ({ selectionMode, option1, option2, onSelectSwitch }) => {
   const [getSelectionMode, setSelectionMode] = useState(selectionMode);
+  useEffect(() => {
+    if (selectionMode != getSelectionMode) {
+      setSelectionMode(selectionMode);
+    }
+  }, [selectionMode]);
 
   const updateSwitchData = (value) => {
     setSelectionMode(value);

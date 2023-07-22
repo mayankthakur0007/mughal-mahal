@@ -1,10 +1,17 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import React, { Component } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { mom } from "../../../shared/Http/momCall";
+import { internalComms } from "../../../shared/Http/internalCommsCall";
+import { messageFromManagement } from "../../../shared/Http/messageFromManagementCall";
 import { Button, Card } from "@rneui/themed";
 
-export default class ViewMoM extends Component {
+export default class ViewMessages extends Component {
   constructor(props) {
     super(props);
 
@@ -21,9 +28,16 @@ export default class ViewMoM extends Component {
     });
     this.fetchData();
   }
-  fetchData=()=>{
-    const moms = mom.findAll();
-    moms
+  fetchData = () => {
+    let { from } = this.props;
+    let module;
+    if (from == "Comms") {
+      module = internalComms;
+    } else if (from == "Management") {
+      module = messageFromManagement;
+    }
+    const getInfo = module.findAll();
+    getInfo
       .then((response) => {
         this.setState({
           data: response.data,
@@ -36,12 +50,20 @@ export default class ViewMoM extends Component {
           loading: false,
         });
       });
-  }
+  };
+
   delete = async (id) => {
     this.setState({
       loading: true,
     });
-    await mom.delete(id);
+    let { from } = this.props;
+    let module;
+    if (from == "Comms") {
+      module = internalComms;
+    } else if (from == "Management") {
+      module = messageFromManagement;
+    }
+    await module.delete(id);
     this.fetchData();
   };
 
@@ -54,37 +76,20 @@ export default class ViewMoM extends Component {
           renderItem={({ item }) => (
             <Card style={styles.card} containerStyle={styles.card}>
               <Text style={styles.cardTitle}>Agenda: {item.subject}</Text>
-              <Text style={styles.cardSubTitle}>Minutes of Meeting</Text>
               <Text style={styles.cardText}>{item.message}</Text>
-              <View style={styles.meetingInfo}>
-                <Button
-                  color="primary"
-                  titleStyle={{ color: "white" }}
-                  buttonStyle={{ borderRadius: 5 }}
-                  title="Hosted By"
-                  size="sm"
-                />
-                <Text style={styles.cardContent}>{item.hosted_by}</Text>
-                <Button
-                  color="error"
-                  titleStyle={{ color: "white" }}
-                  buttonStyle={{ borderRadius: 5 }}
-                  title="At"
-                  size="sm"
-                />
-                <Text style={styles.cardContent}>{item.branch}</Text>
-              </View>
+              {item?.file?.path && (
+                <Text style={styles.cardText}>{item.file.path}</Text>
+              )}
               <View style={styles.btnGroup}>
                 <Button
                   color="white"
-                  onPress={()=>this.props.editSelectedData(item)}
                   titleStyle={{ color: "black" }}
                   buttonStyle={{ borderRadius: 5 }}
                   title="Edit"
                   size="lg"
                 />
                 <Button
-                  onPress={()=>this.delete(item.id)}
+                  onPress={() => this.delete(item.id)}
                   color="black"
                   buttonStyle={{ borderRadius: 5 }}
                   title="Delete"
@@ -95,8 +100,6 @@ export default class ViewMoM extends Component {
           )}
           keyExtractor={(item) => item.id}
         />
-
-        <Text></Text>
       </SafeAreaView>
     );
   }
@@ -114,19 +117,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop:10
+    marginTop: 10,
   },
-  meetingInfo:{
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"flex-start",
-    marginTop:10
-
+  meetingInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: 10,
   },
   cardContent: {
     color: "#000",
     fontSize: 16,
-    fontWeight:"bold",
+    fontWeight: "bold",
     marginHorizontal: 10,
   },
   cardTitle: {
@@ -136,12 +138,12 @@ const styles = StyleSheet.create({
   cardSubTitle: {
     color: "#000",
     fontSize: 16,
-    fontWeight:"bold",
-    marginTop:10
+    fontWeight: "bold",
+    marginTop: 10,
   },
   cardText: {
     color: "#000",
     fontSize: 16,
-    marginTop:10
+    marginTop: 10,
   },
 });

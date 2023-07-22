@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { Button, Card, Input } from "@rneui/themed";
 import { ScrollView } from "react-native-gesture-handler";
@@ -8,15 +8,20 @@ import { MoMSchema } from "../../../shared/FormValidationSchema";
 import { mom } from "../../../shared/Http/momCall";
 import { AuthContext } from "../../../context/AuthContext";
 
-const Compose = () => {
+const Compose = ({ editData, onSaveSuccess }) => {
   const { branchInfo } = useContext(AuthContext);
 
   const onSubmit = async (formData) => {
-    const branches = mom.create(formData);
-    console.log("ggg");
+    let branches;
+    if (editData) {
+      branches = mom.update(editData.id, formData);
+    } else {
+      branches = mom.create(formData);
+    }
     branches
       .then((response) => {
         handleClose();
+        onSaveSuccess();
       })
       .catch((error) => {
         Alert.alert(error);
@@ -26,10 +31,9 @@ const Compose = () => {
   const handleClose = () => {
     formik.resetForm();
   };
-  console.log(branchInfo, "gg");
 
   const formik = useFormik({
-    initialValues: {
+    initialValues: editData || {
       subject: "",
       hosted_by: "",
       branch: "",
@@ -71,24 +75,35 @@ const Compose = () => {
             <Text style={styles.labelStyle}>Branch</Text>
             <View style={styles.dropDown}>
               <Picker
-              mode="dropdown"
+                mode="dropdown"
                 onValueChange={(itemValue, itemIndex) => {
                   formik.setFieldValue("branch", itemValue);
                 }}
                 errorStyle={{ color: "red" }}
                 errorMessage={formik.errors.branch}
                 selectedValue={formik.values.branch}
-                val
                 dropdownIconColor="#000"
               >
-                {branchInfo.map((branch) => (
+                <Picker.Item label={"Select a branch"} value={""} />
+                {branchInfo.map((branch, i) => (
                   <Picker.Item
+                    key={i}
                     label={`${branch.name} (${branch.code})`}
                     value={`${branch.name} (${branch.code})`}
                   />
                 ))}
               </Picker>
             </View>
+            <Text
+              style={{
+                color: "red",
+                paddingLeft: 5,
+                paddingTop: 5,
+                fontSize: 12,
+              }}
+            >
+              {formik.errors.branch}
+            </Text>
           </View>
           <View style={styles.inputContainer}>
             <Input
@@ -104,14 +119,18 @@ const Compose = () => {
             />
           </View>
           <View style={styles.btnGroup}>
-            <Button
-              color="white"
-              titleStyle={{ color: "black" }}
-              buttonStyle={{ borderRadius: 5 }}
-              title="Clear"
-              onPress={handleClose}
-              size="lg"
-            />
+            {!editData ? (
+              <Button
+                color="white"
+                titleStyle={{ color: "black" }}
+                buttonStyle={{ borderRadius: 5 }}
+                title="Clear"
+                onPress={handleClose}
+                size="lg"
+              />
+            ) : (
+              <View />
+            )}
             <Button
               color="black"
               buttonStyle={{ borderRadius: 5 }}

@@ -4,6 +4,8 @@ export const API = {
   designationEndpoint: "/designations",
   branchEndpoint: "/branches",
   momEndpoint: "/mom",
+  internalCommsEndpoint: "/internalcomms",
+  messageFromManagementEndpoint: "/messagefrommanagement",
   loanEndpoint: "/loans",
   leaveEndpoint: "/leaves",
   loginEndpoint: "/users/sign-in",
@@ -11,6 +13,7 @@ export const API = {
   staffEndpoint: "/users",
   studyMaterailEndpoint:"/lms-study-materials",
   lmsQuestionnaires:"/lms-questionnaires",
+  media:"/media",
   lmsCategories:"/lms-categories",
 };
 

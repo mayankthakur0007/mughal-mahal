@@ -4,30 +4,31 @@ import MessageForm from "./MessageForm";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomSwitch from "../../../components/CustomSwitch";
 import { Card } from "@rneui/themed";
+import ViewMessages from "./ViewMessages";
 
 const MessagesFromManagement = () => {
-  const [leaveTab, setLeaveTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(1);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <CustomSwitch
-          selectionMode={leaveTab}
+          selectionMode={selectedTab}
           option1="Add Message"
           option2="View Message"
-          onSelectSwitch={() => {
-            if (leaveTab == 1) {
-              setLeaveTab(2);
-            } else setLeaveTab(1);
-          }}
+          onSelectSwitch={setSelectedTab}
         />
-        {leaveTab == 1 && (
+        {selectedTab == 1 && (
           <Card style={styles.card} containerStyle={styles.card}>
             <MessageForm
+              setSelectedTab={setSelectedTab}
               label={"Add Message from Management"}
               from={"Management"}
             />
           </Card>
+        )}
+        {selectedTab == 2 && (
+          <ViewMessages setSelectedTab={setSelectedTab} from={"Management"} />
         )}
       </ScrollView>
     </SafeAreaView>

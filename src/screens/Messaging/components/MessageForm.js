@@ -1,20 +1,62 @@
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Input, Button } from "@rneui/themed";
-import React from "react";
+import React, { useState } from "react";
 import * as DocumentPicker from "expo-document-picker";
 import { useFormik } from "formik";
-import { MessageSchema } from "../../../shared/FormValidationSchema";
+import { MessageSchema1 } from "../../../shared/FormValidationSchema";
+import * as FileSystem from "expo-file-system";
+import { media } from "../../../shared/Http/media";
+import { internalComms } from "../../../shared/Http/internalCommsCall";
+import { messageFromManagement } from "../../../shared/Http/messageFromManagementCall";
+import IconExtra from "../../../components/Icon";
 
-const MessageForm = ({ label, from }) => {
+const MessageForm = ({ label, from, setSelectedTab }) => {
+  const [file, setFile] = useState({});
+  let mediaPost;
   const onSubmit = async (formData) => {
-    console.log(formData);
+    if (file.image && file.extension) {
+      mediaPost = await media.create(file);
+    }
+    let module;
+    if (from === "Management") {
+      module = messageFromManagement;
+    } else if (from === "Comms") {
+      module = internalComms;
+    }
+    let data = {};
+    data.message = formData.message;
+    data.subject = formData.subject;
+    if (mediaPost?.data?.path) {
+      let { path, file_extension } = mediaPost.data;
+      data.file = { path: path, file_extension: file_extension };
+    }
+    await module.create(data);
     handleClose();
+    setSelectedTab(2);
   };
   const handleClose = () => {
     formik.resetForm();
+    setFile({});
   };
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
+    let base64Img;
+    if (result.type == "success" && result.uri) {
+      base64Img = await FileSystem.readAsStringAsync(result.uri, {
+        encoding: FileSystem?.EncodingType?.Base64,
+      });
+      setFile({
+        image: `data:${result.mimeType};base64,${base64Img}`,
+        extension: result.mimeType.split("/")[1],
+        name: result.name,
+      });
+    }
   };
   const formik = useFormik({
     initialValues: {
@@ -24,7 +66,7 @@ const MessageForm = ({ label, from }) => {
       subject: "",
     },
     onSubmit,
-    validationSchema: MessageSchema,
+    validationSchema: MessageSchema1,
   });
   return (
     <ScrollView>
@@ -93,6 +135,20 @@ const MessageForm = ({ label, from }) => {
             titleStyle={{ color: "white" }}
             onPress={() => _pickDocument()}
           />
+          {file.name ? (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <Text>{file.name}</Text>
+              <TouchableOpacity onPress={() => setFile({})}>
+                <IconExtra name="close" family="FontAwesome" color="black" />
+              </TouchableOpacity>
+            </View>
+          ) : null}
           <View style={styles.btnGroup}>
             <Button
               color="white"

@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from "react-native";
-import React, { Component, useEffect, useState,useContext } from "react";
+import React, { Component, useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomSwitch from "../../../components/CustomSwitch";
 import Compose from "./Compose";
@@ -8,33 +8,46 @@ import { branch } from "../../../shared/Http/branchCall";
 import { AuthContext } from "../../../context/AuthContext";
 
 const MoM = () => {
-  const [leaveTab, setLeaveTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(1);
+  const [editData, setEditData] = useState(undefined);
   const { setBranchInfo } = useContext(AuthContext);
   useEffect(() => {
     const branches = branch.findAll();
     branches
       .then((response) => {
-        console.log("ggg",JSON.stringify(response.data))
         setBranchInfo(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }, []);
+  const switchTab = (tab) => {
+    setSelectedTab(tab);
+    if (selectedTab != tab) {
+      setEditData();
+    }
+  };
+
+  const onSaveSuccess = () => {
+    setEditData();
+    setSelectedTab(2);
+  };
+
+  const editSelectedData = (data) => {
+    setSelectedTab(1);
+    setEditData(data);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <CustomSwitch
-        selectionMode={leaveTab}
+        selectionMode={selectedTab}
         option1="Compose"
         option2="View MoM"
-        onSelectSwitch={() => {
-          if (leaveTab == 1) {
-            setLeaveTab(2);
-          } else setLeaveTab(1);
-        }}
+        onSelectSwitch={switchTab}
       />
-      {leaveTab == 1 ? <Compose /> : <ViewMoM />}
+      {selectedTab == 1 && (
+        <Compose editData={editData} onSaveSuccess={onSaveSuccess} />
+      )}
+      {selectedTab == 2 && <ViewMoM editSelectedData={editSelectedData} />}
     </SafeAreaView>
   );
 };
