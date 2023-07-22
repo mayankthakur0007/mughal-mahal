@@ -8,22 +8,15 @@ import { useFormik } from "formik";
 import { StaffSchema } from "../../../shared/FormValidationSchema";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useEffect } from "react";
 
 const StaffInputs = ({ userStaffData, updateShowStaffInputs }) => {
   const onSubmit = async (formData) => {
-    console.log(formData);
     handleClose();
   };
 
   const handleClose = () => {
     formik.resetForm();
   };
-
-  (useEffect = () => {
-    console.log(userStaffData);
-  }),
-    [userStaffData];
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +39,6 @@ const StaffInputs = ({ userStaffData, updateShowStaffInputs }) => {
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     alert(result.uri);
-    console.log(result);
   };
 
   return (

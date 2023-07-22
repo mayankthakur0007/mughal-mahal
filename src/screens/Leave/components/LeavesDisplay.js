@@ -67,7 +67,7 @@ const LeavesDisplay = (props) => {
     const res = await leaves.findOne(id);
     if (res.status === 200) {
       setLeavesData({ loading: false, data: res.data });
-      setFilteredDataSource(res.data);
+      setFilteredDataSource(res?.data);
     } else {
       setLeavesData({ loading: false, error: res.error });
     }
