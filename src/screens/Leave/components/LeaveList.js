@@ -84,7 +84,7 @@ const LeaveList = ({
           onLongPress={openActionMenu}
         >
           <View style={styles.cardHeader}>
-            <Text>Civil ID: {leave.appliedById.civil_id}</Text>
+            <Text>Civil ID: {leave.appliedById?.civil_id}</Text>
             <Badge
               text={leave.status ? "Approved" : "Pending"}
               containerStyle={styles.badgeContainer}
@@ -100,17 +100,17 @@ const LeaveList = ({
 
             <View style={styles.cardFooter}>
               <View>
-                <Text style={styles.user}>{leave.appliedById.name}</Text>
+                <Text style={styles.user}>{leave?.appliedById?.name}</Text>
                 <Text>
-                  Designation: {leave.appliedById.designation}, Branch:{" "}
-                  {leave.appliedById.branch}
+                  Designation: {leave?.appliedById?.designation}, Branch:{" "}
+                  {leave?.appliedById?.branch}
                 </Text>
               </View>
             </View>
             <Card.Divider />
             <Text style={{ textAlign: "center", fontSize: 16 }}>
               Raised on :{" "}
-              {leave.updatedAt.split("T")[0].split("-").reverse().join("-")}
+              {leave?.updatedAt?.split("T")[0].split("-").reverse().join("-")}
             </Text>
           </View>
         </Pressable>

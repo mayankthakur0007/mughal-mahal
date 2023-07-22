@@ -18,7 +18,7 @@ const LeaveDetails = ({ leave, updateShowLeaveDetails }) => {
         <View style={styles.LeaveEntries}>
           <View style={styles.textContainer}>
             <Text>Full Name:</Text>
-            <Text>{leave.appliedById.name}</Text>
+            <Text>{leave?.appliedById?.name}</Text>
           </View>
           <View style={styles.textContainer}>
             <Text>Leave Type:</Text>
@@ -105,11 +105,11 @@ const LeaveDetails = ({ leave, updateShowLeaveDetails }) => {
             </View>
             <View style={styles.textContainer}>
               <Text>Branch:</Text>
-              <Text>{leave.appliedById.branch}</Text>
+              <Text>{leave?.appliedById?.branch}</Text>
             </View>
             <View style={styles.textContainer}>
               <Text>Designation:</Text>
-              <Text>{leave.appliedById.designation}</Text>
+              <Text>{leave?.appliedById?.designation}</Text>
             </View>
           </View>
         </View>
@@ -124,7 +124,7 @@ const LeaveDetails = ({ leave, updateShowLeaveDetails }) => {
             </View>
             <View style={styles.textContainer}>
               <Text>Other Contact Number:</Text>
-              <Text>{leave.alternativePhoneNumber}</Text>
+              <Text>{leave?.alternativePhoneNumber}</Text>
             </View>
           </View>
         </View>
