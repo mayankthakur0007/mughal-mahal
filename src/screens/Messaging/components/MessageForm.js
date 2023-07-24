@@ -41,7 +41,7 @@ const MessageForm = ({ label, from, setSelectedTab }) => {
     formData.subject && (data.subject = formData.subject);
     formData.email && (data.email = formData.email);
     formData.phone_number && (data.phone_number = formData.phone_number);
-    formData.recipient && (data.recipient = formData.recipient);
+    formData.recipient.length>0 && (data.recipient = formData.recipient);
     if (mediaPost?.data?.path) {
       let { path, file_extension } = mediaPost.data;
       data.file = { path: path, file_extension: file_extension };

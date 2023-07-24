@@ -1,14 +1,14 @@
 import { Block, Text, theme } from "galio-framework";
 import { Linking, StyleSheet, TouchableOpacity } from "react-native";
-
+import { AuthContext } from '../../src/context/AuthContext'
 import Icon from "./Icon";
-import React from "react";
+import React, {useContext} from "react";
 import nowTheme from "../constants/Themes";
 
-class DrawerItem extends React.Component {
-  renderIcon = () => {
-    const { title, focused } = this.props;
+const DrawerItem=(props)=> {
 
+  renderIcon = () => {
+    const { title, focused } = props;
     switch (title) {
       case "Home":
         return (
@@ -152,9 +152,8 @@ class DrawerItem extends React.Component {
     }
   };
 
-  render() {
-    const { focused, title, navigation } = this.props;
-
+    const { isLogin, logout, isLoading } = useContext(AuthContext);
+    const { focused, title, navigation } = props;
     const containerStyles = [
       styles.defaultStyle,
       focused ? [styles.activeStyle, styles.shadow] : null,
@@ -168,12 +167,12 @@ class DrawerItem extends React.Component {
             ? Linking.openURL(
               "https://demos.creative-tim.com/now-ui-pro-react-native/docs/"
             ).catch((err) => console.error("An error occurred", err))
-            : navigation.navigate(title == "LOGOUT" ? "Onboarding" : title)
+            : title == "LOGOUT"?logout():navigation.navigate(title)
         }
       >
         <Block flex row style={containerStyles}>
           <Block middle flex={0.1} style={{ marginRight: 5 }}>
-            {this.renderIcon()}
+            {renderIcon()}
           </Block>
           <Block row center flex={0.9}>
             <Text
@@ -192,7 +191,7 @@ class DrawerItem extends React.Component {
         </Block>
       </TouchableOpacity>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({

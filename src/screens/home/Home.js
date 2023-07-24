@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 
 const Home = ({ navigation }) => {
-  const {isLogin,logout,isLoading} = useContext(AuthContext)
+  const {isLogin} = useContext(AuthContext)
 
   if(!isLogin){
     navigation.navigate("Login");
@@ -11,8 +11,6 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome to Mughal Mahal Welfare</Text>
-      <Button title="Logout" color="red" onPress={logout}/>
     </View>
   )
 }
