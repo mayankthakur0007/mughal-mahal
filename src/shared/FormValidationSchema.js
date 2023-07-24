@@ -27,7 +27,7 @@ export const MessageSchema2 = Yup.object({
   email: Yup.string().required("Please enter Email"),
   phone_number: Yup.string().required("Please enter Phone Number"),
   message: Yup.string().required("Please enter Message"), 
-  subject:Yup.string().required("Please enter Subject")
+  recipient: Yup.array().min(1, "Please select recipient")
 });
 export const LeaveSchema = Yup.object({
   kuwaitContactNumber: Yup.string().required("Required"),

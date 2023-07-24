@@ -5,14 +5,19 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Input, Button } from "@rneui/themed";
+import { Input, Button,CheckBox } from "@rneui/themed";
 import React, { useState } from "react";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import * as DocumentPicker from "expo-document-picker";
 import { useFormik } from "formik";
-import { MessageSchema1 } from "../../../shared/FormValidationSchema";
+import {
+  MessageSchema1,
+  MessageSchema2,
+} from "../../../shared/FormValidationSchema";
 import * as FileSystem from "expo-file-system";
 import { media } from "../../../shared/Http/media";
 import { internalComms } from "../../../shared/Http/internalCommsCall";
+import { messaging } from "../../../shared/Http/messagingCall";
 import { messageFromManagement } from "../../../shared/Http/messageFromManagementCall";
 import IconExtra from "../../../components/Icon";
 
@@ -28,17 +33,22 @@ const MessageForm = ({ label, from, setSelectedTab }) => {
       module = messageFromManagement;
     } else if (from === "Comms") {
       module = internalComms;
+    } else if(from === "Messaging"){
+      module = messaging;
     }
     let data = {};
-    data.message = formData.message;
-    data.subject = formData.subject;
+    formData.message && (data.message = formData.message);
+    formData.subject && (data.subject = formData.subject);
+    formData.email && (data.email = formData.email);
+    formData.phone_number && (data.phone_number = formData.phone_number);
+    formData.recipient && (data.recipient = formData.recipient);
     if (mediaPost?.data?.path) {
       let { path, file_extension } = mediaPost.data;
       data.file = { path: path, file_extension: file_extension };
     }
     await module.create(data);
     handleClose();
-    setSelectedTab(2);
+    setSelectedTab && setSelectedTab(2);
   };
   const handleClose = () => {
     formik.resetForm();
@@ -64,9 +74,10 @@ const MessageForm = ({ label, from, setSelectedTab }) => {
       phone_number: "",
       email: "",
       subject: "",
+      recipient: [],
     },
     onSubmit,
-    validationSchema: MessageSchema1,
+    validationSchema: from == "Messaging" ? MessageSchema2 : MessageSchema1,
   });
   return (
     <ScrollView>
@@ -91,6 +102,132 @@ const MessageForm = ({ label, from, setSelectedTab }) => {
           />
         ) : (
           <>
+            <View>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                }}
+              >
+                Select Recipient
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  flexDirection: "row",
+                  paddingVertical: 10,
+                }}
+              >
+                <CheckBox size={25}
+                  checkedColor="black"
+                  uncheckedColor="black"
+                  textStyle={{
+                    textDecorationLine: "none",
+                    color: "#070707",
+                  }}
+                  title={"H.O"}
+                  iconStyle={{ borderRadius: 3, borderWidth: 2 }}
+                  innerIconStyle={{ borderRadius: 0, borderWidth: 0 }}
+                  checked={formik.values.recipient.includes("H.O")}
+                  onPress={() => {
+                    if (!formik.values.recipient.includes("H.O")) {
+                      formik.setFieldValue("recipient", [
+                        ...formik.values.recipient,
+                        "H.O",
+                      ]);
+                    } else {
+                      formik.setFieldValue(
+                        "recipient",
+                        formik.values.recipient.filter((e) => e != "H.O")
+                      );
+                    }
+                  }}/>
+                {/* <BouncyCheckbox
+                  size={25}
+                  fillColor="black"
+                  unfillColor="white"
+                  textStyle={{
+                    textDecorationLine: "none",
+                    color: "#070707",
+                  }}
+                  text={"H.O"}
+                  iconStyle={{ borderRadius: 3, borderWidth: 2 }}
+                  innerIconStyle={{ borderRadius: 0, borderWidth: 0 }}
+                  isChecked={formik.values.recipient.includes("H.O")}
+                  onPress={(isChecked) => {
+                    if (isChecked) {
+                      formik.setFieldValue("recipient", [
+                        ...formik.values.recipient,
+                        "H.O",
+                      ]);
+                    } else {
+                      formik.setFieldValue(
+                        "recipient",
+                        formik.values.recipient.filter((e) => e != "H.O")
+                      );
+                    }
+                  }}
+                /> */}
+                <CheckBox size={25}
+                  checkedColor="black"
+                  uncheckedColor="black"
+                  textStyle={{
+                    textDecorationLine: "none",
+                    color: "#070707",
+                  }}
+                  title={"H.R"}
+                  iconStyle={{ borderRadius: 3, borderWidth: 2 }}
+                  innerIconStyle={{ borderRadius: 0, borderWidth: 0 }}
+                  checked={formik.values.recipient.includes("H.R")}
+                  onPress={() => {
+                    if (!formik.values.recipient.includes("H.R")) {
+                      formik.setFieldValue("recipient", [
+                        ...formik.values.recipient,
+                        "H.R",
+                      ]);
+                    } else {
+                      formik.setFieldValue(
+                        "recipient",
+                        formik.values.recipient.filter((e) => e != "H.R")
+                      );
+                    }
+                  }}/>
+                  <CheckBox size={25}
+                  checkedColor="black"
+                  uncheckedColor="black"
+                  textStyle={{
+                    textDecorationLine: "none",
+                    color: "#070707",
+                  }}
+                  title={"Director"}
+                  iconStyle={{ borderRadius: 3, borderWidth: 2 }}
+                  innerIconStyle={{ borderRadius: 0, borderWidth: 0 }}
+                  checked={formik.values.recipient.includes("Director")}
+                  onPress={() => {
+                    if (!formik.values.recipient.includes("Director")) {
+                      formik.setFieldValue("recipient", [
+                        ...formik.values.recipient,
+                        "Director",
+                      ]);
+                    } else {
+                      formik.setFieldValue(
+                        "recipient",
+                        formik.values.recipient.filter((e) => e != "Director")
+                      );
+                    }
+                  }}/>
+              </View>
+            </View>
+            <Text
+              style={{
+                color: "red",
+                paddingLeft: 5,
+                paddingTop: 5,
+                fontSize: 12,
+              }}
+            >
+              {formik.errors.recipient}
+            </Text>
             <Input
               style={styles.input}
               label="Email Address"

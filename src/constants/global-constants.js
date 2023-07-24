@@ -6,6 +6,7 @@ export const API = {
   momEndpoint: "/mom",
   internalCommsEndpoint: "/internalcomms",
   messageFromManagementEndpoint: "/messagefrommanagement",
+  messagingEndpoint: "/messaging",
   loanEndpoint: "/loans",
   leaveEndpoint: "/leaves",
   loginEndpoint: "/users/sign-in",
