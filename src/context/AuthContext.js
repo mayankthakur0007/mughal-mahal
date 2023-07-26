@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const[userInfo,setUserInfo] = useState();
+  const [role,setRole] = useState();
   const[branchInfo,setBranchInfo] = useState([]);
   const[isLoading,setIsLoading] = useState(false);
     const[isLogin,setIsLogin] = useState(false);
@@ -39,6 +40,7 @@ export const AuthProvider = ({children}) => {
         setIsLogin(true) 
         let userData = {...userInfo,decoded}
         setUserInfo(userData)
+        setRole(decoded?.roles[0])
         AsyncStorage.setItem('userInfo', JSON.stringify(userData));
       })
       .catch((error) => {
@@ -50,6 +52,7 @@ export const AuthProvider = ({children}) => {
     const logout = () =>{
         AsyncStorage.removeItem('userInfo');
         setUserInfo()
+        setRole()
         setIsLogin(false);
         setIsLoading(false);
       }
@@ -58,10 +61,10 @@ export const AuthProvider = ({children}) => {
         try {
           let userData = await AsyncStorage.getItem('userInfo');
           let parsedUserData = JSON.parse(userData); 
-          console.log(parsedUserData);
           if(parsedUserData && parsedUserData.status==200)
           {
             setUserInfo(userData);
+            setRole(parsedUserData?.decoded?.roles[0])
             setIsLogin(true); 
           }
         } catch (error) {
@@ -77,6 +80,7 @@ export const AuthProvider = ({children}) => {
         <AuthContext.Provider 
             value={{
                 login,
+                role,
                 isLoading,
                 userInfo,
                 isLogin,

@@ -8,9 +8,10 @@ import { branch } from "../../../shared/Http/branchCall";
 import { AuthContext } from "../../../context/AuthContext";
 
 const MoM = () => {
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(2);
   const [editData, setEditData] = useState(undefined);
-  const { setBranchInfo } = useContext(AuthContext);
+  const { setBranchInfo, role } = useContext(AuthContext);
+
   useEffect(() => {
     const branches = branch.findAll();
     branches
@@ -38,12 +39,12 @@ const MoM = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomSwitch
+      {role == "admin" && <CustomSwitch
         selectionMode={selectedTab}
         option1="Compose"
         option2="View MoM"
         onSelectSwitch={switchTab}
-      />
+      />}
       {selectedTab == 1 && (
         <Compose editData={editData} onSaveSuccess={onSaveSuccess} />
       )}

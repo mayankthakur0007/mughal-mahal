@@ -14,7 +14,6 @@ import { actionIcons } from "../../../constants/icons";
 import { theme } from "galio-framework";
 
 const StaffList = ({ data, updateShowStaffInputs, updateShowStaffDetails }) => {
-  console.log(data);
   const { showActionSheetWithOptions } = useActionSheet();
 
   const openActionMenu = () => {

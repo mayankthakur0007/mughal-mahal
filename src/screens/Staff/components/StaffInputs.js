@@ -28,6 +28,7 @@ const StaffInputs = ({ userStaffData, updateShowStaffInputs }) => {
       phone_number: "",
       roles: "",
       serial_number: "",
+      hr:"",
       status: true,
       name: "",
       email: "",
@@ -98,6 +99,18 @@ const StaffInputs = ({ userStaffData, updateShowStaffInputs }) => {
               errorStyle={{ color: "red" }}
               errorMessage={formik.errors.serial_number}
               keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Input
+              style={styles.input}
+              label="H.R"
+              labelStyle={styles.labelStyle}
+              onChangeText={formik.handleChange("hr")}
+              onBlur={formik.handleBlur("hr")}
+              errorStyle={{ color: "red" }}
+              errorMessage={formik.errors.hr}
             />
           </View>
 
